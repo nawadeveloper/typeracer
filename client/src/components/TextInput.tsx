@@ -4,7 +4,10 @@ const TextInput = () => {
   const [typed, setTyped] = useState("");
 
   useEffect(() => {
-    console.log(typed);
+    if (typed === " ") {
+      setTyped("");
+      return;
+    }
   }, [typed]);
   return (
     <input
