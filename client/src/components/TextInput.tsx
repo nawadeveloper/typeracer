@@ -1,5 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 
+type TypingError =
+  | {
+      state: false;
+    }
+  | {
+      state: true;
+      at: number;
+    };
+
 const TextInput = ({ text }: { text: string }) => {
   const { words, totalWords } = useMemo(() => {
     const words = text.split(" ");
@@ -9,13 +18,23 @@ const TextInput = ({ text }: { text: string }) => {
 
   const [index, setIndex] = useState(0);
   const [typed, setTyped] = useState("");
+  const [error, setError] = useState<TypingError>({ state: false });
 
   useEffect(() => {
     const currentWord = words[index];
+    const typedLength = typed.length;
 
     console.log(index, currentWord);
     if (typed === " ") {
       setTyped("");
+      return;
+    }
+
+    if (error.state) {
+      if (error.at >= typedLength) {
+        setError({ state: false });
+      }
+
       return;
     }
 
@@ -24,7 +43,12 @@ const TextInput = ({ text }: { text: string }) => {
       setIndex((prev) => prev + 1);
       return;
     }
+
+    if (typed[typedLength - 1] !== currentWord[typedLength - 1]) {
+      setError({ state: true, at: typedLength - 1 });
+    }
   }, [typed]);
+
   return (
     <input
       value={typed}
