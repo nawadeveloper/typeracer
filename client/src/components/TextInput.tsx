@@ -1,9 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-const TextInput = () => {
+const TextInput = ({ text }: { text: string }) => {
+  const { words, totalWords } = useMemo(() => {
+    const words = text.split(" ");
+    const totalWords = words.length;
+    return { words, totalWords };
+  }, [text]);
   const [typed, setTyped] = useState("");
 
   useEffect(() => {
+    console.log(words, totalWords);
     if (typed === " ") {
       setTyped("");
       return;
