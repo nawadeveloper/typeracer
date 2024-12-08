@@ -6,12 +6,22 @@ const TextInput = ({ text }: { text: string }) => {
     const totalWords = words.length;
     return { words, totalWords };
   }, [text]);
+
+  const [index, setIndex] = useState(0);
   const [typed, setTyped] = useState("");
 
   useEffect(() => {
-    console.log(words, totalWords);
+    const currentWord = words[index];
+
+    console.log(index, currentWord);
     if (typed === " ") {
       setTyped("");
+      return;
+    }
+
+    if (typed[currentWord.length] === " ") {
+      setTyped("");
+      setIndex((prev) => prev + 1);
       return;
     }
   }, [typed]);
