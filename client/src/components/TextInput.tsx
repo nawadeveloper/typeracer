@@ -21,10 +21,12 @@ const TextInput = ({ text }: { text: string }) => {
   const [error, setError] = useState<TypingError>({ state: false });
 
   useEffect(() => {
+    if (index >= totalWords) {
+      return;
+    }
     const currentWord = words[index];
     const typedLength = typed.length;
 
-    console.log(index, currentWord);
     if (typed === " ") {
       setTyped("");
       return;
@@ -36,6 +38,17 @@ const TextInput = ({ text }: { text: string }) => {
       }
 
       return;
+    }
+
+    if (index === totalWords - 1) {
+      if (
+        currentWord[currentWord.length - 1] === typed[currentWord.length - 1]
+      ) {
+        setTyped("");
+        setIndex((prev) => prev + 1);
+        console.log("race is complete.");
+        return;
+      }
     }
 
     if (typed[currentWord.length] === " ") {
