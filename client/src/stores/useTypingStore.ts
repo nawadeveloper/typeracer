@@ -6,5 +6,5 @@ type TypingStore = {
 };
 
 export const useTypingStore = create<TypingStore>()((set) => ({
-    text: textData[Math.floor(Math.random() * textData.length)],
+    text: textData[Math.floor(Math.random() * textData.length)].split(" ").slice(0, 5).join(" "),
 }));
