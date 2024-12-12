@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useTypingStore } from "../stores/useTypingStore";
 
 type TypingError =
   | {
@@ -48,7 +49,7 @@ const useTypingInput = ({ text }: { text: string }) => {
       ) {
         setTyped("");
         setIndex((prev) => prev + 1);
-        console.log("race is complete.");
+        useTypingStore.getState().raceOver();
         return;
       }
     }
