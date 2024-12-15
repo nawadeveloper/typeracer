@@ -1,18 +1,12 @@
-import { useState } from "react";
+import { Mark, useTypingStore } from "../stores/useTypingStore";
 
 const TextToBeType = ({ text }: { text: string }) => {
-  const [mark, setMark] = useState({ correctlyTyped: 10, totalCharTyped: 14 });
+  const mark = useTypingStore((state) => state.mark);
   return (
     <p>
       {text.split("").map((char, i) => {
-        const textColor = i < mark.correctlyTyped ? "text-green-500" : "";
-        const bgColor =
-          i >= mark.correctlyTyped && i < mark.totalCharTyped
-            ? "bg-red-300"
-            : "";
-
         return (
-          <span className={`${textColor} ${bgColor}`} key={char + i}>
+          <span className={addMark(i, mark)} key={char + i}>
             {char}
           </span>
         );
@@ -22,3 +16,11 @@ const TextToBeType = ({ text }: { text: string }) => {
 };
 
 export default TextToBeType;
+
+const addMark = (i: number, mark: Mark): string => {
+  const textColor = i < mark.correctlyTyped ? "text-green-500" : "";
+  const bgColor =
+    i >= mark.correctlyTyped && i < mark.totalCharTyped ? "bg-red-300" : "";
+
+  return `${textColor} ${bgColor}`;
+};

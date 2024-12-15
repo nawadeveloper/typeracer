@@ -21,6 +21,11 @@ const useTypingInput = ({ text }: { text: string }) => {
   const [typed, setTyped] = useState("");
   const [error, setError] = useState<TypingError>({ state: false });
 
+  const updateCorrectMark = useTypingStore((state) => state.updateCorrectMark);
+  const updateIncorrectMark = useTypingStore(
+    (state) => state.updateIncorrectMark
+  );
+
   const raceComplete = index >= totalWords;
 
   useEffect(() => {
@@ -30,6 +35,9 @@ const useTypingInput = ({ text }: { text: string }) => {
     const currentWord = words[index];
     const typedLength = typed.length;
 
+    const totalCharTyped =
+      words.slice(0, index).join("").length + index + typedLength;
+
     if (typed === " ") {
       setTyped("");
       return;
@@ -38,7 +46,11 @@ const useTypingInput = ({ text }: { text: string }) => {
     if (error.state) {
       if (error.at >= typedLength) {
         setError({ state: false });
+        updateCorrectMark(totalCharTyped);
+        return;
       }
+
+      updateIncorrectMark(totalCharTyped);
 
       return;
     }
@@ -62,7 +74,11 @@ const useTypingInput = ({ text }: { text: string }) => {
 
     if (typed[typedLength - 1] !== currentWord[typedLength - 1]) {
       setError({ state: true, at: typedLength - 1 });
+      updateIncorrectMark(totalCharTyped);
+      return;
     }
+
+    updateCorrectMark(totalCharTyped);
   }, [typed]);
 
   return { typed, setTyped, raceComplete };
