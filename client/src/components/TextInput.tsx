@@ -1,12 +1,22 @@
 import useTypingInput from "../hooks/useTypingInput";
+import { useTypingStore } from "../stores/useTypingStore";
 
 const TextInput = ({ text }: { text: string }) => {
   const { typed, setTyped, raceComplete, error } = useTypingInput({ text });
+  const raceStartAt = useTypingStore((state) => state.raceStartAt);
+
+  const startRace = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (raceStartAt === null) {
+      useTypingStore.getState().setRaceStartAt();
+    }
+
+    setTyped(e.target.value);
+  };
 
   return (
     <input
       value={typed}
-      onChange={(e) => setTyped(e.target.value)}
+      onChange={startRace}
       autoFocus
       disabled={raceComplete}
       onPaste={(e) => e.preventDefault()}
