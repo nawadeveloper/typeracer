@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTypingStore } from "../stores/useTypingStore";
 
 type TypingError =
@@ -10,12 +10,8 @@ type TypingError =
       at: number;
     };
 
-const useTypingInput = ({ text }: { text: string }) => {
-  const { words, totalWords } = useMemo(() => {
-    const words = text.split(" ");
-    const totalWords = words.length;
-    return { words, totalWords };
-  }, [text]);
+const useTypingInput = ({ words }: { words: string[] }) => {
+  const totalWords = words.length;
 
   const [index, setIndex] = useState(0);
   const [typed, setTyped] = useState("");
@@ -61,6 +57,8 @@ const useTypingInput = ({ text }: { text: string }) => {
       ) {
         setTyped("");
         setIndex((prev) => prev + 1);
+        useTypingStore.getState().setCurrentSpeed();
+        useTypingStore.getState().setCompletePercentage(100);
         useTypingStore.getState().raceOver();
         return;
       }
@@ -70,6 +68,10 @@ const useTypingInput = ({ text }: { text: string }) => {
       setAlreadyTypedWords((prev) => prev + typedLength);
       setTyped("");
       setIndex((prev) => prev + 1);
+      useTypingStore.getState().setCurrentSpeed();
+      useTypingStore
+        .getState()
+        .setCompletePercentage(((index + 1) / totalWords) * 100);
       return;
     }
 
