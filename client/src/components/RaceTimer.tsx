@@ -7,7 +7,7 @@ const RaceTimer = () => {
 
   useEffect(() => {
     if (time <= 0) {
-      useTypingStore.getState().raceOver();
+      useTypingStore.getState().raceOver("timeout");
       return;
     }
 
