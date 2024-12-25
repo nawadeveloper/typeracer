@@ -3,7 +3,7 @@ import { Mark, useTypingStore } from "../stores/useTypingStore";
 const TextToBeType = ({ text }: { text: string }) => {
   const mark = useTypingStore((state) => state.mark);
   return (
-    <p>
+    <p style={{ userSelect: "none" }}>
       {text.split("").map((char, i) => {
         return (
           <span className={addMark(i, mark)} key={char + i}>

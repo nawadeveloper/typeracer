@@ -3,7 +3,9 @@ import formatTime from "../utils/formatTime";
 import { useTypingStore } from "../stores/useTypingStore";
 
 const RaceTimer = () => {
-  const [time, setTime] = useState(60);
+  const minimumTypingSpeed = 20;
+  const text = useTypingStore((state) => state.text);
+  const [time, setTime] = useState((text.length / 5 / minimumTypingSpeed) * 60);
 
   useEffect(() => {
     if (time <= 0) {
