@@ -100,7 +100,7 @@ export const useTypingStore = create<TypingStore>()((set, get) => ({
 
         const speed = Math.round(words / (seconds / 60));
 
-        const accuracy = 100 - ((get().mistakeWords.length / words) * 100);
+        const accuracy = 100 - ((get().mistakeWords.length / get().text.length) * 100);
 
         return {
             state: "completed",
